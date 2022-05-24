@@ -1,0 +1,125 @@
+<div class="encabezado col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <h2 class="titulo col-xs-10 col-sm-10 col-md-10 col-lg-11">Experiencia</h2>
+    <div class="iconitos col-xs-2 col-sm-2 col-md-2 col-lg-1">
+        <a href="#">
+            <i class="fa fa-plus iconito" (click)="abrirEditarExperiencia(experiencia)"></i>
+        </a>
+    </div>
+</div>
+<section class="tarjeta col-xs-12 col-sm-12 col-md-12 col-lg-12">
+<ul>
+<li class="experiencia" *ngFor="let experiencia of listaExperiencias">
+<article class="flexin col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="flexin col-xs-12 col-sm-11 col-md-11 col-lg-11">
+        <img 
+            [src]="experiencia.img_empresa" 
+            alt="{{ experiencia.nombre_empresa }}" 
+            class="agranda expAvatar col-xs-2 col-sm-2 col-md-2 col-lg-2"
+        />
+        <div>
+            <h3>{{ experiencia.nombre_empresa }}</h3>
+            <p>{{ experiencia.puesto }}</p>
+            <h4>{{ experiencia.fecha_inicio }} | {{ experiencia.fecha_fin }}</h4>
+            <h4>{{ experiencia.localidad_empresa }}</h4>
+        </div>
+    </div>
+    <div class="iconitos col-xs-12 col-sm-1 col-md-1 col-lg-1">
+        <a href="#">
+            <i class="fa fa-pen iconito" (click)="abrirEditarExperiencia(experiencia)"></i>
+        </a>
+        <a href="#">
+            <i class="fa fa-trash iconito" (click)="borrarExperiencia(experiencia.id)"></i>
+        </a>
+    </div>
+</article>
+</ul>
+
+
+<!-- MODAL DE EXPERIENCIAS -->
+<ng-template #experiencia let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">{{ accion | uppercase }} EXPERIENCIA</h4>
+        <button class="btn close" aria-label="close" type="button" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="col-lg-12">
+            <div class="card-body">
+                <form [formGroup]="form" (ngSubmit)="guardarExperiencia()"><!-- EDITAR PERSONA -->
+                    <!-- NOMBRE EMPRESA -->
+                    <div class="input-group input-group-lg mb-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-user"
+                                [class.green-icon]="this.form.get('nombre_empresa')?.valid"
+                                [class.red-icon]="this.form.get('nombre_empresa')?.invalid && this.form.get('nombre_empresa')?.touched">
+                            </i>
+                        </span>
+                        <input formControlName="nombre_empresa" maxlength="50" type="text" class="form-control" placeholder="Nombre de la empresa">
+                    </div>
+
+                    <!-- PUESTO -->
+                    <div class="input-group input-group-lg mb-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-mobile-screen-button"
+                                [class.green-icon]="this.form.get('puesto')?.valid"
+                                [class.red-icon]="this.form.get('puesto')?.invalid && this.form.get('puesto')?.touched">    
+                            </i>
+                        </span>
+                        <input formControlName="puesto" maxlength="50" type="tel" class="form-control" placeholder="Puesto">
+                    </div>
+
+                    <!-- LOCALIDAD EMPRESA -->
+                    <div class="input-group input-group-lg mb-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-location-dot"
+                                [class.green-icon]="this.form.get('localidad_empresa')?.valid"
+                                [class.red-icon]="this.form.get('localidad_empresa')?.invalid && this.form.get('localidad_empresa')?.touched">    
+                            </i>
+                        </span>
+                        <input formControlName="localidad_empresa" maxlength="50" type="text" class="form-control" placeholder="Localidad">
+                    </div>
+                    <!-- IMAGEN -->
+                    <div class="input-group input-group-lg mb-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-image"
+                                [class.green-icon]="this.form.get('img_empresa')?.valid"
+                                [class.red-icon]="this.form.get('img_empresa')?.invalid && this.form.get('img_empresa')?.touched">    
+                            </i>
+                        </span>
+                        <input formControlName="img_empresa" maxlength="2000" type="url" class="form-control" placeholder="URL de imagen">
+                    </div>
+
+                    <!-- FECHA DE INICIO -->
+                    <div class="input-group input-group-lg mb-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-calendar-days"
+                                [class.green-icon]="this.form.get('fecha_inicio')?.valid"
+                                [class.red-icon]="this.form.get('fecha_inicio')?.invalid && this.form.get('fecha_inicio')?.touched">    
+                            </i>
+                        </span>
+                        <input formControlName="fecha_inicio" maxlength="10" type="date" class="form-control" placeholder="Fecha de inicio">
+                    </div>
+
+                    <!-- FECHA DE FINALIZACIÓN -->
+                    <div class="input-group input-group-lg mb-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-calendar-days"
+                                [class.green-icon]="this.form.get('fecha_fin')?.valid"
+                                [class.red-icon]="this.form.get('fecha_fin')?.invalid && this.form.get('fecha_fin')?.touched">    
+                            </i>
+                        </span>
+                        <input formControlName="fecha_fin" maxlength="10" type="date" class="form-control" placeholder="Fecha de finalización">
+                    </div>
+
+                    <!-- BOTON ENVIAR -->
+                    <div class="d-grid gap-2">
+                        <button [disabled]="this.form.invalid" type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-database"></i>&nbsp; Aceptar
+                        </button>                            
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</ng-template>
