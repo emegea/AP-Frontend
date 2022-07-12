@@ -1,0 +1,90 @@
+/* MAGENTA: #C80A64 */
+.contenedorLogin {
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    height:100%;
+}
+.h3 { color:#fafafa; font-weight:600; margin-bottom:.1rem; }
+.loginForm { 
+    transition:ease-in-out .2s;
+    width:100%;
+    max-width:300px;
+    margin:0 auto;
+    padding: 3rem 2rem;
+    margin-top:1rem;
+    background:#ddd;
+    box-shadow:
+    0 0 100px 0px rgb(0 0 0),
+    0 0 20px rgb(0 0 0),
+        inset 0 0 100px rgb(0 0 0 / 50%);
+}
+.loginForm:hover { 
+    transition:ease-in-out .2s;
+    margin-top:.5rem;
+    box-shadow:
+        0 0 20px rgb(200 10 100 / 50%),
+        0 0 20px rgb(0 0 0),
+        0 0 100px 0px rgb(0 0 0),
+        inset 0 0 100px rgb(0 0 0 / 50%);
+}
+.auth-form {
+    background:#fff;
+    border-radius:8px;
+    border:none;
+}
+.form-control { border:0px solid #fff; }
+.btn.btn-primary a { color:#fff;
+}
+.btn.btn-primary {
+    background: #C80A64;
+    border:none;
+    margin:0 auto;
+    margin-top:.5rem;
+    padding:2% 5%;
+    transition:ease-in-out .1s;
+    font-weight:400;
+    font-size: 14px;
+    text-shadow:1px 1px 1px rgb(0 0 0 / 25%);
+    box-shadow:inset 0px -50px 10px -40px rgb(0 0 0 / 10%);
+}
+.btn.btn-primary:hover {
+    background: #C80A64;
+    border:none;
+    margin-top:0;
+    margin-bottom:.5rem;
+    transition:ease-in-out .2s;
+    box-shadow:
+        inset 0px 0 10px -40px rgb(0 0 0 / 25%),
+        0 15px 12px -10px rgb(255 255 255),
+        20px 15px 4px -10px rgb(255 255 255),
+        -20px 15px 4px -10px rgb(255 255 255),
+        0px 30px 20px -10px rgb(0 0 0 / 50%);
+}
+.textoChico {
+    font-size:14px !important;
+    font-weight:400 !important;
+}
+.form-check { display:flex; align-items:baseline; padding:0; }
+.check { 
+    color:#C80A64;
+    background: #fff;
+    border:0;
+    border-radius:100px;
+    box-shadow: 0 0 0.5rem 0 rgba(200 10 100 / 100%) !important;
+    max-height: 10px;
+    max-width: 10px;
+    margin:0 .5rem;
+}
+.check:hover { 
+    color:#fff;
+    box-shadow: 0 0 0.5rem 0 rgba(0 0 0 / 30%) !important;
+    background: rgba(200 10 100 / 20%) !important;
+}
+.check:checked {
+    border:1px solid #C80A64;
+    color:#C80A64;
+    box-shadow: 0 0 0.5rem 0 rgba(0 0 0 / 30%) !important;
+}
+

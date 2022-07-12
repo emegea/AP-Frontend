@@ -5,16 +5,19 @@
             title="{{persona.nombre}} {{persona.apellido}}" 
             alt="{{persona.nombre}} {{persona.apellido}}" 
         />
-        <a href="#">
-            <i class="fa fa-pen iconito" (click)="abrirEditarPersona(persona)"></i>
-            <i class="fa fa-trash iconito" (click)="borrarPersona(persona.id)"></i>
-            <i class="fa fa-plus iconito" (click)="abrirEditarPersona(persona)"></i>
-        </a>
+        <div>
+            <i class="fa fa-pen iconito" *ngIf="ulogged !=''"
+            (click)="abrirEditarPersona(persona)"></i>
+            <i class="fa fa-trash iconito" *ngIf="ulogged !=''"
+            (click)="borrarPersona(persona.id)"></i>
+            <i class="fa fa-plus iconito" *ngIf="ulogged !=''"
+            (click)="abrirEditarPersona(persona)"></i>
+        </div>
     </div>
     <div class="resumen">
         <h2 class="titulo">{{persona.nombre}} {{persona.apellido}}</h2>
         <h3>{{persona.puesto}}</h3>
-        <p><i class="fa-solid fa-location-dot"></i> {{persona.ciudad}}, {{persona.provincia}}, {{persona.pais}}</p>      
+        <h4><i class="fa-solid fa-location-dot"></i>{{persona.ciudad}}, {{persona.provincia}}, {{persona.pais}}</h4>      
         <ul>
             <li>
                 <a href="">
@@ -50,11 +53,12 @@
 </section>
 -->
 <div class="tarjeta col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div>
+    <div class="encabezado">
         <h2 class="titulo">Quién Soy ?<span>></span></h2>
-        <i class="fa fa-pen iconito" (click)="abrirEditarPersona(persona)"></i>
+        <i class="fa fa-pen iconito" *ngIf="ulogged != ''"
+        (click)="abrirEditarPersona(persona)" ></i>
     </div>
-    <div *ngFor="let persona of listaPersonas" class="quiensoyContenido col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div *ngFor="let persona of listaPersonas" class="quiensoyContenido flexin col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <p class="col-xs-12 col-sm-8 col-md-8 col-lg-7" [innerHTML]="persona.acerca_de"></p>
         <ul class="flexin col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <li>
@@ -67,7 +71,9 @@
         </ul>
     </div>
 </div>
-
+<!--
+<app-editar-persona></app-editar-persona>
+-->
 <!-- MODAL DE PERSONA-->
 <ng-template #persona let-modal>
     <div class="modal-header">
@@ -86,7 +92,7 @@
                 <th>
                 <!--                        
                         <! -- NOMBRE DE USUARIO -- >
-                        <div class="input-group input-group-lg mb-3">
+                        <div class="input-group input-group-lg mb-3 inputIcon">
                             <span class="input-group-text">
                                 <i class="fa-solid fa-user"
                                     [class.green-icon]="this.form.get('nombre_usuario')?.valid"
@@ -97,7 +103,7 @@
                         </div>
 
                         <! -- PASSWORD -- >
-                        <div class="input-group input-group-lg mb-3">
+                        <div class="input-group input-group-lg mb-3 inputIcon">
                             <span class="input-group-text">
                                 <i class="fa-solid fa-lock"
                                     [class.green-icon]="this.form.get('password')?.valid"
@@ -108,7 +114,7 @@
                         </div>                        
 -->
                         <!-- NOMBRE -->
-                        <div class="input-group input-group-lg mb-3">
+                        <div class="input-group input-group-lg mb-3 inputIcon inputIcon">
                             <span class="input-group-text">
                                 <i class="fa-solid fa-user"
                                     [class.green-icon]="this.form.get('nombre')?.valid"
@@ -119,7 +125,7 @@
                         </div>
 
                         <!-- TELEFONO -->
-                        <div class="input-group input-group-lg mb-3">
+                        <div class="input-group input-group-lg mb-3 inputIcon">
                             <span class="input-group-text">
                                 <i class="fa-solid fa-mobile-screen-button"
                                     [class.green-icon]="this.form.get('telefono')?.valid"
@@ -130,7 +136,7 @@
                         </div>
 
                         <!-- CIUDAD -->
-                        <div class="input-group input-group-lg mb-3">
+                        <div class="input-group input-group-lg mb-3 inputIcon">
                             <span class="input-group-text">
                                 <i class="fa-solid fa-location-dot"
                                     [class.green-icon]="this.form.get('ciudad')?.valid"
@@ -141,7 +147,7 @@
                         </div>
 
                         <!-- PROVINCIA -->
-                        <div class="input-group input-group-lg mb-3">
+                        <div class="input-group input-group-lg mb-3 inputIcon">
                             <span class="input-group-text">
                                 <i class="fa-solid fa-map-location-dot"
                                     [class.green-icon]="this.form.get('provincia')?.valid"
@@ -152,7 +158,7 @@
                         </div>
 
                         <!-- PAÍS -->
-                        <div class="input-group input-group-lg mb-3">
+                        <div class="input-group input-group-lg mb-3 inputIcon">
                             <span class="input-group-text">
                                 <i class="fa-solid fa-earth-americas"
                                     [class.green-icon]="this.form.get('pais')?.valid"
@@ -163,7 +169,7 @@
                         </div>
 
                         <!-- PUESTO -->
-                        <div class="input-group input-group-lg mb-3">
+                        <div class="input-group input-group-lg mb-3 inputIcon">
                             <span class="input-group-text">
                                 <i class="fa-solid fa-briefcase"
                                     [class.green-icon]="this.form.get('puesto')?.valid"
@@ -174,7 +180,7 @@
                         </div>
 
                         <!-- IMAGEN -->
-                        <div class="input-group input-group-lg mb-3">
+                        <div class="input-group input-group-lg mb-3 inputIcon">
                             <span class="input-group-text">
                                 <i class="fa-solid fa-image"
                                     [class.green-icon]="this.form.get('url_img')?.valid"
@@ -188,7 +194,7 @@
                     <th>
 
                         <!-- APELLIDO -->
-                        <div class="input-group input-group-lg mb-3">
+                        <div class="input-group input-group-lg mb-3 inputIcon">
                             <span class="input-group-text">
                                 <i class="fa-solid fa-user-group"
                                     [class.green-icon]="this.form.get('apellido')?.valid"
@@ -199,7 +205,7 @@
                         </div>
 
                         <!-- EMAIL -->
-                        <div class="input-group input-group-lg mb-3">
+                        <div class="input-group input-group-lg mb-3 inputIcon">
                             <span class="input-group-text">
                                 <i class="fa-solid fa-envelope"
                                     [class.green-icon]="this.form.get('email')?.valid"
@@ -210,7 +216,7 @@
                         </div>
 
                         <!-- FECHA DE NACIMIENTO -->
-                        <div class="input-group input-group-lg mb-3">
+                        <div class="input-group input-group-lg mb-3 inputIcon">
                             <span class="input-group-text">
                                 <i class="fa-solid fa-calendar-days"
                                     [class.green-icon]="this.form.get('fecha_nac')?.valid"
@@ -221,7 +227,7 @@
                         </div>
 
                         <!-- ACERCA DE -->
-                        <div class="input-group input-group-lg mb-3">
+                        <div class="input-group input-group-lg mb-3 inputIcon">
                             <span class="input-group-text">
                                 <i class="fa-solid fa-user-pen"
                                     [class.green-icon]="this.form.get('acerca_de')?.valid"

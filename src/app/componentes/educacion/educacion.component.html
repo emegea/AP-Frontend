@@ -1,9 +1,7 @@
 <div class="encabezado col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <h2 class="titulo col-xs-12 col-sm-11 col-md-11 col-lg-11">Educación</h2>
     <div class="iconitos col-xs-12 col-sm-1 col-md-1 col-lg-1">
-        <a href="#">
-            <i class="fa fa-plus iconito" (click)="abrirEditarEducacion(educacion)"></i>
-        </a>
+        <i class="fa fa-plus iconito" *ngIf="ulogged != ''" (click)="abrirEditarEducacion(educacion)" ></i>
     </div>
 </div>
 <section class="tarjeta col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -14,23 +12,25 @@
             <img 
                 [src]="educacion.img_diploma" 
                 alt="" 
-                class="agranda eduAvatar col-xs-2 col-sm-2 col-md-2 col-lg-2"
+                class="agranda avatar col-xs-2 col-sm-2 col-md-2 col-lg-2"
             />
             <div>
                 <h3>{{educacion.titulo_educacion}}</h3>
-                <p>{{educacion.institucion}}</p>
-                <h4>{{educacion.fecha_inicio}} | {{educacion.fecha_fin}}</h4>
-                <h4>{{educacion.localidad}}</h4>
+                <h4>{{educacion.institucion}}</h4>
+                <h6>{{educacion.fecha_inicio}} | {{educacion.fecha_fin}}</h6>
+                <h5>{{educacion.localidad}}</h5>
             </div>
         </div>
         <div class="iconitos col-xs-12 col-sm-1 col-md-1 col-lg-1">
-            <a href="#">
-                <i class="fa fa-pen iconito" (click)="abrirEditarEducacion(educacion)"></i>
+            <a>
+                <i class="fa fa-pen iconito" *ngIf="ulogged !=''" 
+                (click)="abrirEditarEducacion(educacion)"></i>
             </a>
-        </div>
-        <a href="#">
-            <i class="fa fa-trash iconito" (click)="borrarEducacion(educacion.id)"></i>
-        </a>
+            <a>
+                <i class="fa fa-trash iconito" *ngIf="ulogged !=''"
+                (click)="borrarEducacion(educacion.id)"></i>
+            </a>
+    </div>
 
     </article>
     </li>
@@ -49,7 +49,7 @@
             <div class="card-body">
                 <form [formGroup]="form" (ngSubmit)="guardarEducacion()"><!-- EDITAR PERSONA -->
                     <!-- TITULO EDUCACIÓN -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-user"
                                 [class.green-icon]="this.form.get('titulo_educacion')?.valid"
@@ -60,31 +60,31 @@
                     </div>
 
                     <!-- LOCALIDAD -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
-                            <i class="fa-solid fa-mobile-screen-button"
+                            <i class="fa-solid fa-location-dot"
                                 [class.green-icon]="this.form.get('localidad')?.valid"
                                 [class.red-icon]="this.form.get('localidad')?.invalid && this.form.get('localidad')?.touched">    
                             </i>
                         </span>
-                        <input formControlName="localidad" maxlength="50" type="tel" class="form-control" placeholder="Localidad">
+                        <input formControlName="localidad" maxlength="50" type="text" class="form-control" placeholder="Localidad">
                     </div>
 
                     <!-- INSTITUCIÓN -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
-                            <i class="fa-solid fa-location-dot"
+                            <i class="fa-solid fa-school"
                                 [class.green-icon]="this.form.get('institucion')?.valid"
                                 [class.red-icon]="this.form.get('institucion')?.invalid && this.form.get('institucion')?.touched">    
                             </i>
                         </span>
-                        <input formControlName="institucion" maxlength="50" type="text" class="form-control" placeholder="Localidad">
+                        <input formControlName="institucion" maxlength="50" type="text" class="form-control" placeholder="Institucion">
                     </div>
 
                     <!-- URL DIPLOMA -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
-                            <i class="fa-solid fa-image"
+                            <i class="fa-solid fa-link"
                                 [class.green-icon]="this.form.get('url_diploma')?.valid"
                                 [class.red-icon]="this.form.get('url_diploma')?.invalid && this.form.get('url_diploma')?.touched">    
                             </i>
@@ -93,7 +93,7 @@
                     </div>
                     
                     <!-- URL IMG DIPLOMA -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-image"
                                 [class.green-icon]="this.form.get('img_diploma')?.valid"
@@ -104,7 +104,7 @@
                     </div>
 
                     <!-- FECHA DE INICIO -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-calendar-days"
                                 [class.green-icon]="this.form.get('fecha_inicio')?.valid"
@@ -115,7 +115,7 @@
                     </div>
 
                     <!-- FECHA DE FINALIZACIÓN -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-calendar-days"
                                 [class.green-icon]="this.form.get('fecha_fin')?.valid"

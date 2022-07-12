@@ -1,9 +1,8 @@
 <div class="encabezado col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <h2 class="titulo col-xs-10 col-sm-10 col-md-10 col-lg-11">Experiencia</h2>
     <div class="iconitos col-xs-2 col-sm-2 col-md-2 col-lg-1">
-        <a href="#">
-            <i class="fa fa-plus iconito" (click)="abrirEditarExperiencia(experiencia)"></i>
-        </a>
+        <i class="fa fa-plus iconito" *ngIf="ulogged != ''" 
+        (click)="abrirEditarExperiencia(experiencia)" ></i>
     </div>
 </div>
 <section class="tarjeta col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -14,21 +13,23 @@
         <img 
             [src]="experiencia.img_empresa" 
             alt="{{ experiencia.nombre_empresa }}" 
-            class="agranda expAvatar col-xs-2 col-sm-2 col-md-2 col-lg-2"
+            class="agranda avatar col-xs-2 col-sm-2 col-md-2 col-lg-2"
         />
         <div>
             <h3>{{ experiencia.nombre_empresa }}</h3>
-            <p>{{ experiencia.puesto }}</p>
-            <h4>{{ experiencia.fecha_inicio }} | {{ experiencia.fecha_fin }}</h4>
-            <h4>{{ experiencia.localidad_empresa }}</h4>
+            <h4>{{ experiencia.puesto }}</h4>
+            <h6>{{ experiencia.fecha_inicio }} | {{ experiencia.fecha_fin }}</h6>
+            <h5>{{ experiencia.localidad_empresa }}</h5>
         </div>
     </div>
     <div class="iconitos col-xs-12 col-sm-1 col-md-1 col-lg-1">
-        <a href="#">
-            <i class="fa fa-pen iconito" (click)="abrirEditarExperiencia(experiencia)"></i>
+        <a>
+            <i class="fa fa-pen iconito" *ngIf="ulogged !=''"
+            (click)="abrirEditarExperiencia(experiencia)"></i>
         </a>
-        <a href="#">
-            <i class="fa fa-trash iconito" (click)="borrarExperiencia(experiencia.id)"></i>
+        <a>
+            <i class="fa fa-trash iconito" *ngIf="ulogged !=''"
+            (click)="borrarExperiencia(experiencia.id)"></i>
         </a>
     </div>
 </article>
@@ -47,9 +48,9 @@
             <div class="card-body">
                 <form [formGroup]="form" (ngSubmit)="guardarExperiencia()"><!-- EDITAR PERSONA -->
                     <!-- NOMBRE EMPRESA -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
-                            <i class="fa-solid fa-user"
+                            <i class="fa-solid fa-building"
                                 [class.green-icon]="this.form.get('nombre_empresa')?.valid"
                                 [class.red-icon]="this.form.get('nombre_empresa')?.invalid && this.form.get('nombre_empresa')?.touched">
                             </i>
@@ -58,18 +59,18 @@
                     </div>
 
                     <!-- PUESTO -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
-                            <i class="fa-solid fa-mobile-screen-button"
+                            <i class="fa-solid fa-user"
                                 [class.green-icon]="this.form.get('puesto')?.valid"
                                 [class.red-icon]="this.form.get('puesto')?.invalid && this.form.get('puesto')?.touched">    
                             </i>
                         </span>
-                        <input formControlName="puesto" maxlength="50" type="tel" class="form-control" placeholder="Puesto">
+                        <input formControlName="puesto" maxlength="50" type="text" class="form-control" placeholder="Puesto">
                     </div>
 
                     <!-- LOCALIDAD EMPRESA -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-location-dot"
                                 [class.green-icon]="this.form.get('localidad_empresa')?.valid"
@@ -79,7 +80,7 @@
                         <input formControlName="localidad_empresa" maxlength="50" type="text" class="form-control" placeholder="Localidad">
                     </div>
                     <!-- IMAGEN -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-image"
                                 [class.green-icon]="this.form.get('img_empresa')?.valid"
@@ -90,7 +91,7 @@
                     </div>
 
                     <!-- FECHA DE INICIO -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-calendar-days"
                                 [class.green-icon]="this.form.get('fecha_inicio')?.valid"
@@ -101,7 +102,7 @@
                     </div>
 
                     <!-- FECHA DE FINALIZACIÓN -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-calendar-days"
                                 [class.green-icon]="this.form.get('fecha_fin')?.valid"

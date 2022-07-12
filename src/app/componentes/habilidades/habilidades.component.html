@@ -1,38 +1,32 @@
 <div class="encabezado col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <h2 class="titulo col-xs-12 col-sm-11 col-md-11 col-lg-11">Habilidades</h2>
     <div class="iconitos col-xs-12 col-sm-1 col-md-1 col-lg-1">
-        <a href="#">
-            <i class="fa fa-plus iconito" (click)="abrirEditarHabilidad(habilidad)"></i>
-        </a>
+        <i class="fa fa-plus iconito" *ngIf="ulogged != ''"
+        (click)="abrirEditarHabilidad(habilidad)" ></i>
     </div>
 </div>
 <section class="habilidades tarjeta col-xs-12 col-sm-12 col-md-12 col-lg-12">
 <ul>
 <li class="habilidad" *ngFor="let habilidad of listaHabilidades">
 <article class="flexin col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="flexin col-xs-12 col-sm-11 col-md-11 col-lg-11">
-        <div>
-            <h3>{{ habilidad.titulo }}</h3>
-            <circle-progress
-                [title]="habilidad.titulo"
-                [percent]="habilidad.porcentaje"
-                [radius]="100"
-                [outerStrokeWidth]="16"
-                [innerStrokeWidth]="8"
-                [outerStrokeColor]="'#C80A64'"
-                [innerStrokeColor]="'#111111'"
-                [animation]="true"
-                [animationDuration]="600">
-            </circle-progress>
-        </div>
+    <div class="col-xs-12 col-sm-11 col-md-11 col-lg-12">
+        <circle-progress
+            [title]="habilidad.titulo"
+            [percent]="habilidad.porcentaje"
+            [radius]="100"
+            [outerStrokeWidth]="16"
+            [innerStrokeWidth]="8"
+            [outerStrokeColor]="'#C80A64'"
+            [innerStrokeColor]="'#111111'"
+            [animation]="true"
+            [animationDuration]="600">
+        </circle-progress>
     </div>
     <div class="iconitos col-xs-12 col-sm-1 col-md-1 col-lg-1">
-        <a href="#">
-            <i class="fa fa-pen iconito" (click)="abrirEditarHabilidad(habilidad)"></i>
-        </a>
-        <a href="#">
-            <i class="fa fa-trash iconito" (click)="borrarHabilidad(habilidad)"></i>
-        </a>
+        <i class="fa fa-pen iconito" *ngIf="ulogged !=''"
+        (click)="abrirEditarHabilidad(habilidad.id)"></i>
+        <i class="fa fa-trash iconito" *ngIf="ulogged !=''"
+        (click)="borrarHabilidad(habilidad.id)"></i>
     </div>
 </article>
 </li>
@@ -54,7 +48,7 @@
                 <form [formGroup]="form" (ngSubmit)="guardarHabilidad()"><!-- EDITAR PERSONA -->
 
                     <!-- TÍTULO HABILIDAD -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-user"
                                 [class.green-icon]="this.form.get('titulo_habilidad')?.valid"
@@ -65,7 +59,7 @@
                     </div>
 
                     <!-- PORCENTAJE -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-mobile-screen-button"
                                 [class.green-icon]="this.form.get('porcentaje')?.valid"

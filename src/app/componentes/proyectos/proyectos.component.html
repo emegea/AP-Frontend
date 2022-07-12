@@ -1,12 +1,14 @@
 <div class="encabezado col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <h2 class="titulo col-xs-12 col-sm-11 col-md-11 col-lg-11">Proyectos</h2>
     <div class="iconitos col-xs-12 col-sm-1 col-md-1 col-lg-1">
-        <i class="fa fa-plus iconito" (click)="abrirEditarProyecto(proyecto)"></i>
+        <i class="fa fa-plus iconito" *ngIf="ulogged != ''"
+        (click)="abrirEditarProyecto(proyecto)" ></i>
     </div>
 </div>
 <section class="tarjeta col-xs-12 col-sm-12 col-md-12 col-lg-12">
 <ul class="flexin proyectos">
-<li class="proyecto" *ngFor="let proyecto of listaProyectos">
+<li class="proyecto col-xs-12 col-lg-3"
+*ngFor="let proyecto of listaProyectos">
 <article class="flexin col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="flexin col-xs-12 col-sm-11 col-md-11 col-lg-11">
         <div>
@@ -14,20 +16,23 @@
             <div class="imagen">
                 <img [src]="proyecto.img_proyecto" class="img-fluid" alt="{{ proyecto.titulo }}">
                 <div class="mostrarModal">
-                    <button class="fa-solid fa-circle-plus iconito2" (click)="abrirImagen(proyectoImagen)">
-                    </button>
+                    <button class="fa-solid fa-circle-plus iconito2" 
+                    (click)="abrirImagen(proyectoImagen)"></button>
                     <!-- MODAL-->
                     <ng-template #proyectoImagen let-modal>
                         <img [src]="proyecto.img_proyecto" alt="" >
                     </ng-template>
                 </div>
             </div>
-            <p>{{proyecto.descripcion_proyecto}}</p>
+            <h6>{{proyecto.descripcion_proyecto}}</h6>
         </div>
-    </div>
-    <div class="iconitos col-xs-12 col-sm-1 col-md-1 col-lg-1">
-        <i class="fa fa-trash iconito" (click)="borrarProyecto(proyecto.id)"></i>
-        <i class="fa fa-pen iconito" (click)="editarProyecto(proyecto)"></i>
+        <div class="iconitos col-xs-12 col-sm-1 col-md-1 col-lg-1">
+            <button *ngIf="ulogged !=''" (click)="editarProyecto(proyecto)">
+                <i class="fa fa-pen iconito" ></i>
+        </button>
+            <i class="fa fa-trash iconito" *ngIf="ulogged !=''"
+            (click)="borrarProyecto(proyecto.id)"></i>
+        </div>
     </div>
 </article>
 </li>
@@ -48,7 +53,7 @@
                 <form [formGroup]="form" (ngSubmit)="guardarProyecto()"><!-- EDITAR PERSONA -->
 
                     <!-- TÍTULO DEL PROYECTO -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-user"
                                 [class.green-icon]="this.form.get('titulo_proyecto')?.valid"
@@ -59,7 +64,7 @@
                     </div>
 
                     <!-- URL DEL PROYECTO -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-mobile-screen-button"
                                 [class.green-icon]="this.form.get('url_proyecto')?.valid"
@@ -70,7 +75,7 @@
                     </div>
 
                     <!-- IMG DEL PROYECTO -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-mobile-screen-button"
                                 [class.green-icon]="this.form.get('img_proyecto')?.valid"
@@ -81,7 +86,7 @@
                     </div>
 
                     <!-- DESCRIPCIÓN  DEL PROYECTO -->
-                    <div class="input-group input-group-lg mb-3">
+                    <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-mobile-screen-button"
                                 [class.green-icon]="this.form.get('descripcion_proyecto')?.valid"

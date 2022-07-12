@@ -1,0 +1,63 @@
+
+<div class="contenedorLogin">
+  <div class="text-center">
+    <h3 class="h3">Iniciar sesión</h3>
+  </div>
+<section class="auth-form loginForm">
+
+  <!-- QUEDAMOS ACÁ CON RODRY -->
+  <form [formGroup]="form" >
+    <!-- EMAIL -->
+    <div class="mb-3" class="inputIcon">
+      <span>
+        <i class="fa-solid fa-user"></i>
+      </span>
+      <input [(ngModel)]="email" 
+        type="email"
+        id="exampleInputEmail1"
+        class="form-control"
+        formControlName="email" 
+        placeholder="email">
+    </div>
+
+      <!-- PAASSWORD -->
+      <div class="mb-3" class="inputIcon">
+        <span><i class="fa-solid fa-lock"></i></span>
+        <input [(ngModel)]="password"
+          type="password"
+          id="exampleInputPassword1"
+          class="form-control"
+          formControlName="password" 
+          placeholder="password">
+      </div>
+
+      <!-- CHECK 
+      <div class="mb-3 form-check">
+        <input type="checkbox"
+          class="form-check-input check"
+          id="exampleCheck1">
+        <label class="form-check-label textoChico"
+          for="exampleCheck1">Recordar
+        </label>
+      </div>
+    -->
+
+      <!-- BOTÓN ENVIAR -->
+      <div class="d-grid">
+          <button 
+            type="submit"
+            class="btn btn-primary"
+            (click)="login()">Enviar
+          </button>
+      </div>
+
+      <!-- MENSAJES ABAJO -->
+      <div class="text-center mt-5">
+        <ng-container>
+          <p class="text-black textoChico">{{loginerror}}</p>
+        </ng-container>
+      </div>
+    </form>
+
+  </section>
+</div>

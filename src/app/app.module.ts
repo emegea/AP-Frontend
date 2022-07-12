@@ -11,9 +11,9 @@ import { ReactiveFormsModule } from "@angular/forms"
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 //COMPONENTES
-import { ModalComponent } from './componentes/modal/modal.component';
 import { HeaderComponent } from './componentes/header/header.component';
 import { EditarPersonaComponent } from './componentes/editar-persona/editar-persona.component';
 import { EducacionComponent } from './componentes/educacion/educacion.component';
@@ -23,11 +23,12 @@ import { HabilidadesComponent } from './componentes/habilidades/habilidades.comp
 import { PersonaComponent } from './componentes/persona/persona.component';
 import { ProyectosComponent } from './componentes/proyectos/proyectos.component';
 import { SocialComponent } from './componentes/social/social.component';
+import { LoginComponent } from './componentes/login/login.component';
+import { HomeComponent } from './componentes/home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ModalComponent,
     HeaderComponent,
     EditarPersonaComponent,
     EducacionComponent,
@@ -36,7 +37,9 @@ import { SocialComponent } from './componentes/social/social.component';
     HabilidadesComponent,
     PersonaComponent,
     ProyectosComponent,
-    SocialComponent
+    SocialComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,7 @@ import { SocialComponent } from './componentes/social/social.component';
     ToastrModule.forRoot(),
     FormsModule
   ],
-  providers: [],
+  providers: [ CookieService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

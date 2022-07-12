@@ -1,3 +1,4 @@
+import { LoginService } from './../../servicios/login.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -16,12 +17,14 @@ export class PersonaComponent implements OnInit {
   accion = 'Agregar';
   form: FormGroup;
   id: number | undefined;
+  ulogged: String = "";
 
   constructor(
     public modal: NgbModal, // Declaro el Modal
     private datosPortfolio:CrudService, //Acá llamo al service que carga el Json
     private fb: FormBuilder,
     private toastr: ToastrService,
+    private LoginService: LoginService,
     private _crudService: CrudService) { 
     this.form = this.fb.group({
       acerca_de: ['', Validators.required],
@@ -30,9 +33,7 @@ export class PersonaComponent implements OnInit {
       email: ['', Validators.required],
       fecha_nac: ['', Validators.required],
       nombre: ['', Validators.required],
-//      nombre_usuario: ['', Validators.required],
       pais: ['', Validators.required],
-//      password: ['', Validators.required],
       provincia: ['', Validators.required],
       puesto: ['', Validators.required],
       telefono: ['', Validators.required],
@@ -45,21 +46,24 @@ export class PersonaComponent implements OnInit {
     this.datosPortfolio.obtenerDatos().subscribe(data => {
       this.listaInsignias=data.Insignias;
     });
+    this.ulogged = this.LoginService.getUserLogged();
   }
+
   //MÉTODOS DEL MODAL
   abrirEditarPersona(persona: any){
-    this.modal.open(persona, { size:'xl', centered:true, scrollable:true });
+    this.modal.open(persona, { size:'lg', centered:true, scrollable:true });
   }
 
+// CRUD
+// Listar Personas
   listarPersonas(){
     this._crudService.getListaPersonas().subscribe(data=> {
-      console.log(data);
+      this.form.reset();
       this.listaPersonas = data;
-//    }, error => {
-//      console.log(error);
-   })
+    });
   }
 
+// Guardar Persona
   guardarPersona(){
     const persona: any = {
       acerca_de: this.form.get('acerca_de')?.value,
@@ -68,48 +72,44 @@ export class PersonaComponent implements OnInit {
       email: this.form.get('email')?.value,
       fecha_nac: this.form.get('fecha_nac')?.value,
       nombre: this.form.get('nombre')?.value,
-//      nombre_usuario: this.form.get('nombre_usuario')?.value,
       pais: this.form.get('pais')?.value,
-//      password: this.form.get('password')?.value,
       provincia: this.form.get('provincia')?.value,
       puesto: this.form.get('puesto')?.value,
       telefono: this.form.get('telefono')?.value,
       url_img: this.form.get('url_img')?.value
     }
     if(this.id == undefined){
-      // Agregar Persona
+      // Si es indefinido o sea que no existe, entonces Agregar Persona
       this._crudService.guardarPersona(persona).subscribe(data =>{
         this.toastr.success('Persona registrada con éxito!', 'Persona Registrada!');
         this.listarPersonas();
         this.form.reset();  
- //     }, error =>{
- //       this.toastr.error('Ocurrió un error', 'Error')
- //       console.log(error);
       })  
     }else{
+      // Si lo anterior no sucede, osea que si existe, entonces Editar Persona
       persona.id = this.id;
-      // Editar Persona
       this._crudService.editarPersona(this.id, persona).subscribe(data => {
         this.form.reset();
-        this.accion = 'Agregar';
+        this.accion = 'Editar';
         this.id = undefined;
         this.toastr.info('Persona registrada con éxito!', 'Persona Registrada!');
         this.listarPersonas();
-//      }, error =>{
-//        this.toastr.error('Ocurrió un error', 'Error')
-//        console.log(error);
-      })  
+      })
     }
   }
 
+// Borrar Persona
   borrarPersona(id: number){
     this._crudService.borrarPersona(id).subscribe(data=> {
       this.toastr.error('Persona eliminada correctamente!','Persona Eliminada');
       this.listarPersonas();
-//    }, error => {
-//      console.log(error);
+    }, error => {
+      this.toastr.error('Ocurrió un error', 'Error');
     })
+    this.form.reset();
   }  
+
+  //Editar Persona
   editarPersona(persona: any){
     this.accion = 'Editar';
     this.id = persona.id;
@@ -120,9 +120,7 @@ export class PersonaComponent implements OnInit {
       email: persona.email,
       fecha_nac: persona.fecha_nac,
       nombre: persona.nombre,
-//      nombre_usuario: persona.nombre_usuario,
       pais: persona.pais,
-//      password: persona.password,
       provincia: persona.provincia,
       puesto: persona.puesto,
       telefono: persona.telefono,

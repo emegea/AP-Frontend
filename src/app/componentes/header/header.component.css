@@ -1,6 +1,6 @@
 .banner {
     width:100%;
-    height:400px;
+    height:300px;
     overflow:hidden;
     position:relative;
     z-index: -1;
@@ -46,7 +46,13 @@ button.login:hover {
     background:#80063f;
     color:#d6d6d6;
 }
+button.login:hover > a, button.login a:hover { color:#fff; }
+.resumen
+
+
+/* MEDIA */
 
 @media (max-width:480px){
     .banner { height:300px; }
+    .menu { flex-direction: column; }
 }

@@ -98,6 +98,6 @@ export class CrudService {
     return this.http.post(this.urlApi + 'proyecto/nueva', proyecto);
   }
   editarProyecto(id: number, proyecto: any):Observable <any> {
-    return this.http.put(this.urlApi + 'proyecto/' + id, proyecto);
+    return this.http.put(this.urlApi + 'proyecto/editar/' + id, proyecto);
   }
 }

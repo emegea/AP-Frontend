@@ -1,13 +1,29 @@
-.quiensoy { justify-content:space-between; padding:0 0 2% 0; }
-.resumen h3, .resumen p { color:#f6f6f6; }
-.resumen h2, .resumen h3, .resumen p, .insignias li a {
+.quiensoy {
+    padding:0 0 2% 0;
+    margin:-12rem 0 0 0;
+    justify-content: space-around;
+    align-items:center;
+}
+.resumen {
+    background: #333;
+    padding:2rem 3rem;
+    border-radius:5px;
+    transition:ease-in-out .3s;
+    box-shadow:
+        0 0 10px 5px rgb(0 0 0 / 25%), 
+        inset 0 0 100px 0 rgb(0 0 0 / 50%);
+}
+.resumen:hover {
+    box-shadow: 0px 0px 30px 10px rgb(200 10 100 / 25%);
+    transition:ease-in-out .5s;
+}
+.resumen h3, .resumen h4 { color:#f6f6f6 !important; }
+.resumen p { font-size: 0.9em; color:#f6f6f6; }
+.resumen h2, .resumen h3, .resumen h4, .resumen p, .insignias li a, .resumen ul {
     text-shadow:0px 0px 2px rgb(0 0 0 / 80%),
-    1px 1px 0px rgb(0 0 0 / 50%),
-    1px 1px 1px rgb(0 0 0 / 50%),
-    1px 1px 2px rgb(0 0 0 / 50%),
-    2px 2px 0px rgb(0 0 0 / 50%),
-    2px 2px 1px rgb(0 0 0 / 50%),
-    2px 2px 2px rgb(0 0 0 / 50%);
+    1px 1px 0px rgb(0 0 0 / 50%), 1px 1px 1px rgb(0 0 0 / 50%),
+    1px 1px 2px rgb(0 0 0 / 50%), 2px 2px 0px rgb(0 0 0 / 50%),
+    2px 2px 1px rgb(0 0 0 / 50%), 2px 2px 2px rgb(0 0 0 / 50%);
 }
 .resumen h3 { padding-bottom:5%; }
 .resumen ul {
@@ -15,14 +31,17 @@
     justify-content:flex-start;
 }
 .resumen ul li {
+    padding:0;
+}
+.resumen ul li:first-child {
     padding:0 5% 0 0;
 }
 .resumen ul a {
     display:flex;
     align-items:center;
 }
-.resumen ul a i, .resumen p i {
-    margin:0 20px 0 0;
+.resumen ul a i, .resumen h4 i, .resumen p i {
+    margin:0 10px 0 0;
     color:#C80A64;
 }
 .avatar {
@@ -34,7 +53,6 @@
     border-radius:100%;
     box-shadow: 0px 0px 30px 10px rgb(0 0 0 / 80%);
     border:5px solid #C80A64;
-    margin:-30% 0 0 0;
     transition:ease-in-out .5s;
 }
 .avatar img:hover {
@@ -70,8 +88,11 @@
 /*
 .card div { display:flex; justify-content:space-between; }
 */
-.titulo { padding:0 0 2% 0; }
+.titulo { padding:0 0 2% 0;} 
+.titulo, .resumen h2, .resumen h3, 
+.resumen h4, .resumen ul { justify-content: center !important; }
 .titulo span { font-size:22px; display:flex; align-items:center; }
+.quiensoyContenido { padding: 0 1.5rem;}
 .quiensoyContenido ul { justify-content:center; flex-direction:column; }
 .quiensoyContenido ul li { display:flex; justify-content:flex-end; margin:0 0 5% 0; }
 
@@ -79,13 +100,24 @@
 table { width:100%; }
 tr { 
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
 }
 textarea.acercaDe {
     height:175px;
     resize:both;
 }
 
+.pencil, .trash {
+    cursor:pointer;
+    }
+    
+    .green-icon{
+    color:#198754
+    }
+    .red-icon{
+    color:#dc3545
+    }
+    
 @media (max-width:480px){
     .quiensoy { flex-direction:column; }
     .avatar { align-items:center; }

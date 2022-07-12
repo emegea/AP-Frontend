@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ModalComponent } from './componentes/modal/modal.component'
+import { HomeComponent } from './componentes/home/home.component';
+import { LoginComponent } from './componentes/login/login.component';
 
 const routes: Routes = [
-  { path:'modal', component:ModalComponent }
+  { path:'', component: HomeComponent },
+  { path:'home', component: HomeComponent },
+  { path:'login', component: LoginComponent },
+  { path:'**', pathMatch: 'full', redirectTo:'home' }
 
 ];
 

@@ -1,3 +1,4 @@
+import { LoginService } from './../../servicios/login.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -16,28 +17,28 @@ export class EducacionComponent implements OnInit {
   accion = 'Agregar';
   form: FormGroup;
   id: number | undefined;
+  ulogged: String = "";
 
   constructor(
-    public modal: NgbModal, // Declaro el Modal
     private datosPortfolio:CrudService, //Acá llamo al service que carga el Json
+    public modal: NgbModal, // Declaro el Modal
     private fb: FormBuilder,
     private toastr: ToastrService,
+    private LoginService: LoginService,
     private _crudService: CrudService) { 
-    this.form = this.fb.group({
-      acerca_de: ['', Validators.required],
-      apellido: ['', Validators.required],
-      ciudad: ['', Validators.required],
-      email: ['', Validators.required],
-      fecha_nac: ['', Validators.required],
-      nombre: ['', Validators.required],
-//      nombre_usuario: ['', Validators.required],
-      pais: ['', Validators.required],
-//      password: ['', Validators.required],
-      provincia: ['', Validators.required],
-      puesto: ['', Validators.required],
-      telefono: ['', Validators.required],
-      url_img: ['', Validators.required]
-    })
+      this.form = this.fb.group({
+        acerca_de: ['', Validators.required],
+        apellido: ['', Validators.required],
+        ciudad: ['', Validators.required],
+        email: ['', Validators.required],
+        fecha_nac: ['', Validators.required],
+        nombre: ['', Validators.required],
+        pais: ['', Validators.required],
+        provincia: ['', Validators.required],
+        puesto: ['', Validators.required],
+        telefono: ['', Validators.required],
+        url_img: ['', Validators.required]
+      })
   }
 
   ngOnInit(): void {
@@ -45,21 +46,24 @@ export class EducacionComponent implements OnInit {
     this.datosPortfolio.obtenerDatos().subscribe(data => {
       this.listaInsignias=data.Insignias;
     });
+    this.ulogged = this.LoginService.getUserLogged();
   }
+
   //MÉTODOS DEL MODAL
   abrirEditarEducacion(educacion: any){
-    this.modal.open(educacion, { size:'xl', centered:true, scrollable:true });
+    this.modal.open(educacion, { size:'s', centered:true, scrollable:true });
   }
 
+// CRUD
+// Listar Proyectos
   listarEducaciones(){
     this._crudService.getListaEducaciones().subscribe(data=> {
-      console.log(data);
+      this.form.reset();
       this.listaEducaciones = data;
-//    }, error => {
-//      console.log(error);
-   })
+   });
   }
 
+// Guardar Educación
   guardarEducacion(){
     const educacion: any = {
       fecha_inicio: this.form.get('fecha_inicio')?.value,
@@ -71,40 +75,41 @@ export class EducacionComponent implements OnInit {
       url_empresa: this.form.get('url_empresa')?.value
     }
     if(this.id == undefined){
-      // Agregar Educacion
+      // Si es indefinido o sea que no existe, entonces Agregar Educación
       this._crudService.guardarEducacion(educacion).subscribe(data =>{
         this.toastr.success('Educacion registrada con éxito!', 'Educacion Registrada!');
         this.listarEducaciones();
         this.form.reset();  
- //     }, error =>{
- //       this.toastr.error('Ocurrió un error', 'Error')
- //       console.log(error);
+      }, error =>{
+        this.toastr.error('Ocurrió un error', 'Error');
       })  
     }else{
+      // Si lo anterior no sucede, osea que si existe, entonces Editar Educación
       educacion.id = this.id;
-      // Editar Educacion
       this._crudService.editarEducacion(this.id, educacion).subscribe(data => {
         this.form.reset();
-        this.accion = 'Agregar';
+        this.accion = 'Editar';
         this.id = undefined;
         this.toastr.info('Educacion registrada con éxito!', 'Educacion Registrada!');
         this.listarEducaciones();
-//      }, error =>{
-//        this.toastr.error('Ocurrió un error', 'Error')
-//        console.log(error);
       })  
     }
   }
 
+//Borrar Educación
   borrarEducacion(id: number){
     this._crudService.borrarEducacion(id).subscribe(data=> {
       this.toastr.error('Educacion eliminada correctamente!','Educacion Eliminada');
       this.listarEducaciones();
-//    }, error => {
-//      console.log(error);
+    }, error => {
+      this.toastr.error('Ocurrió un error', 'Error');
     })
-  }  
+    this.form.reset();
+  }
+
+//Editar Proyecto
   editarEducacion(educacion: any){
+    this.form.reset();
     this.accion = 'Editar';
     this.id = educacion.id;
     this.form.patchValue({
@@ -115,7 +120,6 @@ export class EducacionComponent implements OnInit {
       nombre_empresa: educacion.nombre_empresa,
       puesto: educacion.puesto,
       url_empresa: educacion.url_empresa
-
     })
   }
 
