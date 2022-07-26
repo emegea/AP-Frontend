@@ -21,11 +21,11 @@ export class PersonaComponent implements OnInit {
 
   constructor(
     public modal: NgbModal, // Declaro el Modal
-    private datosPortfolio:CrudService, //Acá llamo al service que carga el Json
-    private fb: FormBuilder,
     private toastr: ToastrService,
-    private LoginService: LoginService,
-    private _crudService: CrudService) { 
+    private loginService: LoginService, // Service Login
+    private fb: FormBuilder,
+    private insignias:CrudService, //Acá llamo al service que carga el Json con las insignias
+    private crudService: CrudService) {  // Service CRUD
     this.form = this.fb.group({
       acerca_de: ['', Validators.required],
       apellido: ['', Validators.required],
@@ -43,10 +43,10 @@ export class PersonaComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarPersonas();
-    this.datosPortfolio.obtenerDatos().subscribe(data => {
+    this.insignias.obtenerDatos().subscribe(data => {
       this.listaInsignias=data.Insignias;
     });
-    this.ulogged = this.LoginService.getUserLogged();
+    this.ulogged = this.loginService.getUserLogged();
   }
 
   //MÉTODOS DEL MODAL
@@ -57,7 +57,7 @@ export class PersonaComponent implements OnInit {
 // CRUD
 // Listar Personas
   listarPersonas(){
-    this._crudService.getListaPersonas().subscribe(data=> {
+    this.crudService.getListaPersonas().subscribe(data=> {
       this.form.reset();
       this.listaPersonas = data;
     });
@@ -80,7 +80,7 @@ export class PersonaComponent implements OnInit {
     }
     if(this.id == undefined){
       // Si es indefinido o sea que no existe, entonces Agregar Persona
-      this._crudService.guardarPersona(persona).subscribe(data =>{
+      this.crudService.guardarPersona(persona).subscribe(data =>{
         this.toastr.success('Persona registrada con éxito!', 'Persona Registrada!');
         this.listarPersonas();
         this.form.reset();  
@@ -88,7 +88,7 @@ export class PersonaComponent implements OnInit {
     }else{
       // Si lo anterior no sucede, osea que si existe, entonces Editar Persona
       persona.id = this.id;
-      this._crudService.editarPersona(this.id, persona).subscribe(data => {
+      this.crudService.editarPersona(this.id, persona).subscribe(data => {
         this.form.reset();
         this.accion = 'Editar';
         this.id = undefined;
@@ -98,20 +98,9 @@ export class PersonaComponent implements OnInit {
     }
   }
 
-// Borrar Persona
-  borrarPersona(id: number){
-    this._crudService.borrarPersona(id).subscribe(data=> {
-      this.toastr.error('Persona eliminada correctamente!','Persona Eliminada');
-      this.listarPersonas();
-    }, error => {
-      this.toastr.error('Ocurrió un error', 'Error');
-    })
-    this.form.reset();
-  }  
-
-  //Editar Persona
-  editarPersona(persona: any){
-    this.accion = 'Editar';
+  
+//Editar Persona
+  editarPersona(persona:any, abreModal:any){
     this.id = persona.id;
     this.form.patchValue({
       acerca_de: persona.acerca_de,
@@ -125,7 +114,23 @@ export class PersonaComponent implements OnInit {
       puesto: persona.puesto,
       telefono: persona.telefono,
       url_img: persona.url_img
-    })
+    });
+    this.modal.open(abreModal, { size:'xl', centered:true, scrollable:true });
+    this.accion = 'Editar';
+    this.crudService.editarProyecto(persona, persona).subscribe(data => {
+      this.listaPersonas = data;
+      this.id = undefined;
+      this.toastr.info('Persona editada con éxito!', 'Persona Editada!');
+      this.listarPersonas();
+    })  
   }
 
+//Borrar Proyecto
+  borrarPersona(id: number){
+    this.crudService.borrarPersona(id).subscribe(null, data=> {
+      this.id = undefined;
+      this.toastr.info('Persona eliminada correctamente!','Persona eliminada');
+      this.listarPersonas();
+    })
+  }  
 }

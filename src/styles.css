@@ -60,7 +60,7 @@ a:hover { color:#80063f; }
   box-shadow:none;
 }
 
-.row { padding:2% 4%; margin:0; }
+.row { padding:2% 4%; margin:0 auto; max-width:1200px }
 .flexin { display:flex; }
 .encabezado { display:flex; justify-content: space-between; align-items:center; }
 .titulo { 
@@ -183,15 +183,6 @@ a:hover { color:#80063f; }
 
 
 
-
-
-
-
-
-
-
-
-
 /* MEDIA */
 
 @media (max-width:480px){
@@ -201,7 +192,6 @@ a:hover { color:#80063f; }
   .tarjeta article { display:block;padding: 0 0 5% 0; margin:0 0 5% 0; }
   .tarjeta:first-child { padding-top:5%; }
   .tarjeta article div { flex-direction:column; }
-  .tarjeta article div img { display:none; }
   .iconitos { flex-direction:row !important; justify-content:flex-end; }
   .iconito { font-size:10px; padding: 5px; }
   h1 { font-size:1.8rem !important; }

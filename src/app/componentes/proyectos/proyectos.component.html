@@ -2,7 +2,7 @@
     <h2 class="titulo col-xs-12 col-sm-11 col-md-11 col-lg-11">Proyectos</h2>
     <div class="iconitos col-xs-12 col-sm-1 col-md-1 col-lg-1">
         <i class="fa fa-plus iconito" *ngIf="ulogged != ''"
-        (click)="abrirEditarProyecto(proyecto)" ></i>
+        (click)="abrirEditarProyecto(divModal)" ></i>
     </div>
 </div>
 <section class="tarjeta col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -27,9 +27,8 @@
             <h6>{{proyecto.descripcion_proyecto}}</h6>
         </div>
         <div class="iconitos col-xs-12 col-sm-1 col-md-1 col-lg-1">
-            <button *ngIf="ulogged !=''" (click)="editarProyecto(proyecto)">
-                <i class="fa fa-pen iconito" ></i>
-        </button>
+            <i class="fa fa-pen iconito" *ngIf="ulogged !=''" 
+            (click)="editarProyecto(proyecto, divModal)"></i>
             <i class="fa fa-trash iconito" *ngIf="ulogged !=''"
             (click)="borrarProyecto(proyecto.id)"></i>
         </div>
@@ -40,7 +39,7 @@
 </section>
 
 
-<ng-template #proyecto let-modal>
+<ng-template #divModal let-modal>
     <div class="modal-header">
         <h4 class="modal-title">{{ accion | uppercase }} PROYECTO</h4>
         <button class="btn close" aria-label="close" type="button" (click)="modal.dismiss()">
@@ -66,7 +65,7 @@
                     <!-- URL DEL PROYECTO -->
                     <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
-                            <i class="fa-solid fa-mobile-screen-button"
+                            <i class="fa-solid fa-link"
                                 [class.green-icon]="this.form.get('url_proyecto')?.valid"
                                 [class.red-icon]="this.form.get('url_proyecto')?.invalid && this.form.get('url_proyecto')?.touched">    
                             </i>
@@ -77,7 +76,7 @@
                     <!-- IMG DEL PROYECTO -->
                     <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
-                            <i class="fa-solid fa-mobile-screen-button"
+                            <i class="fa-solid fa-image"
                                 [class.green-icon]="this.form.get('img_proyecto')?.valid"
                                 [class.red-icon]="this.form.get('img_proyecto')?.invalid && this.form.get('img_proyecto')?.touched">    
                             </i>
@@ -88,7 +87,7 @@
                     <!-- DESCRIPCIÓN  DEL PROYECTO -->
                     <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
-                            <i class="fa-solid fa-mobile-screen-button"
+                            <i class="fa-solid fa-pen"
                                 [class.green-icon]="this.form.get('descripcion_proyecto')?.valid"
                                 [class.red-icon]="this.form.get('descripcion_proyecto')?.invalid && this.form.get('descripcion_proyecto')?.touched">    
                             </i>

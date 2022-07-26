@@ -1,14 +1,15 @@
 .proyectos {
-    display:block;
+    display:flex;
+    flex-flow: wrap;
 }
 .proyectos li {
-    margin:0 0 2% 0;
+    margin:0;
     width:25%;
     float:left;
 }
 
 .proyecto {
-    padding:0 2% 2% 2%;
+    padding:0;
 }
 .proyecto article { 
     border:none;
@@ -78,7 +79,8 @@
 /* MEDIA */
 
 @media (max-width:480px){
-    .proyectos { flex-direction:column; }
+    .proyectos { flex-direction:row; }
+    .proyectos li { width:50%; padding:2%; }
     .proyecto { display:block; padding: 0 0 5% 0; margin:0 0 5% 0; border:0; }
     .proyecto article { border:none; }
     .proyectos:first-child { padding-top:5%; }

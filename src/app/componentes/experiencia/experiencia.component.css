@@ -1,0 +1,4 @@
+
+@media (max-width:480px){
+    .tarjeta article div img { display:none; }
+  }

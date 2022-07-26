@@ -1,4 +1,4 @@
-import { LoginService } from './../../servicios/login.service';
+import { LoginService } from 'src/app/servicios/login.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -12,7 +12,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ProyectosComponent implements OnInit {
   
-  listaInsignias:any; // Esta lista es la que conecta al JSON
   listaProyectos: any [] = [];
   img_proyecto: any;
   accion = 'Agregar';
@@ -21,12 +20,11 @@ export class ProyectosComponent implements OnInit {
   ulogged: String = "";
 
   constructor(
-    private datosPortfolio:CrudService, //Acá llamo al service que carga el Json
     public modal: NgbModal, // Declaro el Modal
-    private fb: FormBuilder,
     private toastr: ToastrService,
-    private LoginServ: LoginService,
-    private _crudService: CrudService) { 
+    private loginService: LoginService, // Service Login
+    private fb: FormBuilder,
+    private crudService: CrudService) {  // Service CRUD
       this.form = this.fb.group({
         titulo_proyecto: ['', Validators.required],
         url_proyecto: ['', Validators.required],
@@ -37,15 +35,12 @@ export class ProyectosComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarProyectos();
-    this.datosPortfolio.obtenerDatos().subscribe(data => {
-      this.listaInsignias=data.Insignias;
-    });
-    this.ulogged = this.LoginServ.getUserLogged();
+    this.ulogged = this.loginService.getUserLogged();
   }
 
 //MÉTODOS DEL MODAL
-  abrirEditarProyecto(proyecto: any){
-    this.modal.open(proyecto, { size:'xl', centered:true, scrollable:true });
+  abrirEditarProyecto(divModal: any){
+    this.modal.open(divModal, { size:'xl', centered:true, scrollable:true });
   }
   abrirImagen(proyectoImagen: any){
     this.modal.open(proyectoImagen, { size:'lg', centered:true, scrollable:false });
@@ -54,7 +49,7 @@ export class ProyectosComponent implements OnInit {
 // CRUD
 // Listar Proyectos
   listarProyectos(){
-    this._crudService.getListaProyectos().subscribe(data=> {
+    this.crudService.getListaProyectos().subscribe(data=> {
       this.form.reset();
       this.listaProyectos = data;
    });
@@ -70,18 +65,17 @@ export class ProyectosComponent implements OnInit {
     }
     if(this.id == undefined){
       // Si es indefinido o sea que no existe, entonces crear(Guardar) Proyecto
-      this._crudService.guardarProyecto(proyecto).subscribe(data =>{
+      this.accion = 'Agregar';
+      this.crudService.guardarProyecto(proyecto).subscribe(data =>{
         this.toastr.success('Proyecto registrado con éxito!', 'Proyecto Registrado!');
         this.form.reset();
-        this.accion = 'Agregar';
         this.listarProyectos();
       })  
     }else{
       // Si lo anterior no sucede, osea que si existe, entonces Editar Proyecto
       proyecto.id = this.id;
-      this.accion = 'Editar';
-      this._crudService.editarProyecto(this.id, proyecto).subscribe(data => {
-        this.form.reset();
+      this.crudService.editarProyecto(this.id, proyecto).subscribe(data => {
+        this.accion = 'Editar';
         this.id = undefined;
         this.toastr.info('Proyecto editado con éxito!', 'Proyecto Editado!');
         this.listarProyectos();
@@ -89,63 +83,32 @@ export class ProyectosComponent implements OnInit {
     }
   }
   
-/*   //Editar Proyecto
-  editarProyecto(proyecto: any){
-    proyecto.id = this.id;
-    this._crudService.editarProyecto(proyecto.id, proyecto).subscribe(data => {
-      this.accion = 'Editar';
-      this.id = undefined;
-      this.toastr.info('Proyecto editado con éxito!', 'Proyecto Editado!');
-      this.listarProyectos();
-      this.form.reset();
-      this.abrirEditarProyecto(proyecto);
-    })  
-}
- */
-
-
-  // Editar Proyecto
-  editarProyecto(proyecto: any){
-    this.abrirEditarProyecto(proyecto.proyecto);
+  //Editar Proyecto
+  editarProyecto(proyecto:any, abreModal:any){
+    this.id = proyecto.id;
     this.form.patchValue({
       titulo_proyecto: proyecto.titulo_proyecto,
       url_proyecto: proyecto.url_proyecto,
       img_proyecto: proyecto.img_proyecto,
       descripcion_proyecto: proyecto.descripcion_proyecto
-    })
-    this._crudService.editarProyecto(proyecto.id, proyecto).subscribe(data => {
-      this.accion = 'Editar';
-      this.id = proyecto.id;
+    });
+    this.modal.open(abreModal, { size:'xl', centered:true, scrollable:true });
+    this.accion = 'Editar';
+    this.crudService.editarProyecto(proyecto, proyecto).subscribe(data => {
+      this.listaProyectos = data;
+      this.id = undefined;
       this.toastr.info('Proyecto editado con éxito!', 'Proyecto Editado!');
       this.listarProyectos();
     })  
-    this.form.reset();
-    
   }
-
-  // Editar Habilidad
-  editarHabilidad(habilidad: any){
-    this.accion = 'Editar';
-    this.id = habilidad.id;
-    this.form.patchValue({
-      porcentaje: habilidad.porcentaje,
-      titulo_habilidad: habilidad.titulo_habilidad
-    })
-  }
-
-
-
 
 //Borrar Proyecto
   borrarProyecto(id: number){
-    this._crudService.borrarProyecto(id).subscribe(data=> {
+    this.crudService.borrarProyecto(id).subscribe(null, data=> {
+      this.id = undefined;
       this.toastr.info('Proyecto eliminado correctamente!','Proyecto Eliminado');
       this.listarProyectos();
-    }, error => {
-      this.toastr.error('Ocurrió un error', 'Error');
     })
-    this.form.reset();
-    window.location.reload();
   }  
 
 }

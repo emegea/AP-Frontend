@@ -7,11 +7,11 @@
         />
         <div>
             <i class="fa fa-pen iconito" *ngIf="ulogged !=''"
-            (click)="abrirEditarPersona(persona)"></i>
+            (click)="editarPersona(persona, divModal)"></i>
             <i class="fa fa-trash iconito" *ngIf="ulogged !=''"
             (click)="borrarPersona(persona.id)"></i>
             <i class="fa fa-plus iconito" *ngIf="ulogged !=''"
-            (click)="abrirEditarPersona(persona)"></i>
+            (click)="abrirEditarPersona(divModal)"></i>
         </div>
     </div>
     <div class="resumen">
@@ -55,12 +55,24 @@
 <div class="tarjeta col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="encabezado">
         <h2 class="titulo">Quién Soy ?<span>></span></h2>
-        <i class="fa fa-pen iconito" *ngIf="ulogged != ''"
-        (click)="abrirEditarPersona(persona)" ></i>
     </div>
     <div *ngFor="let persona of listaPersonas" class="quiensoyContenido flexin col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <p class="col-xs-12 col-sm-8 col-md-8 col-lg-7" [innerHTML]="persona.acerca_de"></p>
         <ul class="flexin col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <li>
+                <img class="img-fluid" 
+                    [src]="persona.url_img" 
+                    title="{{persona.nombre}}"
+                    alt="{{persona.nombre}}"
+                />
+            </li>
+            <li>
+                <img class="img-fluid" 
+                    [src]="persona.url_img" 
+                    title="{{persona.nombre}}"
+                    alt="{{persona.nombre}}"
+                />
+            </li>
             <li>
                 <img class="img-fluid" 
                     [src]="persona.url_img" 
@@ -75,7 +87,7 @@
 <app-editar-persona></app-editar-persona>
 -->
 <!-- MODAL DE PERSONA-->
-<ng-template #persona let-modal>
+<ng-template #divModal let-modal>
     <div class="modal-header">
         <h4 class="modal-title">{{ accion | uppercase }} PERSONA</h4>
         <button class="btn close" aria-label="close" type="button" (click)="modal.dismiss()">
@@ -223,7 +235,12 @@
                                     [class.red-icon]="this.form.get('fecha_nac')?.invalid && this.form.get('fecha_nac')?.touched">    
                                 </i>
                             </span>
-                            <input formControlName="fecha_nac" maxlength="10" type="date" class="form-control" placeholder="Fecha de Nacimiento">
+                            <input formControlName="fecha_nac"
+                            type="text"
+                            maxlength="10"
+                            onfocus="(this.type='date').touched"
+                            class="form-control" 
+                            placeholder="Fecha de Nacimiento">
                         </div>
 
                         <!-- ACERCA DE -->

@@ -12,7 +12,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ExperienciaComponent implements OnInit {
   
-  listaInsignias:any; // Esta lista es la que conecta al JSON
   listaExperiencias: any [] = [];
   accion = 'Agregar';
   form: FormGroup;
@@ -20,33 +19,25 @@ export class ExperienciaComponent implements OnInit {
   ulogged: String = "";
 
   constructor(
-    private datosPortfolio:CrudService, //Acá llamo al service que carga el Json
     public modal: NgbModal, // Declaro el Modal
-    private fb: FormBuilder,
     private toastr: ToastrService,
-    private LoginService: LoginService,
-    private _crudService: CrudService) { 
+    private loginService: LoginService, // Service Login
+    private fb: FormBuilder,
+    private crudService: CrudService) {  // Service CRUD
     this.form = this.fb.group({
-      acerca_de: ['', Validators.required],
-      apellido: ['', Validators.required],
-      ciudad: ['', Validators.required],
-      email: ['', Validators.required],
-      fecha_nac: ['', Validators.required],
-      nombre: ['', Validators.required],
-      pais: ['', Validators.required],
-      provincia: ['', Validators.required],
+      fecha_inicio: ['', Validators.required],
+      fecha_fin: ['', Validators.required],
+      img_empresa: ['', Validators.required],
+      localidad_empresa: ['', Validators.required],
+      nombre_empresa: ['', Validators.required],
       puesto: ['', Validators.required],
-      telefono: ['', Validators.required],
-      url_img: ['', Validators.required]
+      url_empresa: ['', Validators.required]
     })
   }
 
   ngOnInit(): void {
     this.listarExperiencias();
-    this.datosPortfolio.obtenerDatos().subscribe(data => {
-      this.listaInsignias=data.Insignias;
-    });
-    this.ulogged = this.LoginService.getUserLogged();
+    this.ulogged = this.loginService.getUserLogged();
   }
 
   //MÉTODOS DEL MODAL
@@ -57,7 +48,7 @@ export class ExperienciaComponent implements OnInit {
 // CRUD
 // Listar Experiencias
   listarExperiencias(){
-    this._crudService.getListaExperiencias().subscribe(data=> {
+    this.crudService.getListaExperiencias().subscribe(data=> {
       this.form.reset();
       this.listaExperiencias = data;
     });
@@ -76,17 +67,17 @@ export class ExperienciaComponent implements OnInit {
     }
     if(this.id == undefined){
       // Si es indefinido o sea que no existe, entonces Agregar Experiencia
-      this._crudService.guardarExperiencia(experiencia).subscribe(data =>{
+      this.accion = 'Agregar';
+      this.crudService.guardarExperiencia(experiencia).subscribe(data =>{
         this.toastr.success('Experiencia registrada con éxito!', 'Experiencia Registrada!');
-        this.listarExperiencias();
         this.form.reset();  
+        this.listarExperiencias();
       })  
     }else{
       // Si lo anterior no sucede, osea que si existe, entonces Editar Proyecto
       experiencia.id = this.id;
-      this._crudService.editarExperiencia(this.id, experiencia).subscribe(data => {
-        this.form.reset();
-        this.accion = 'Editar';
+      this.accion = 'Editar';
+      this.crudService.editarExperiencia(this.id, experiencia).subscribe(data => {
         this.id = undefined;
         this.toastr.info('Experiencia registrada con éxito!', 'Experiencia Registrada!');
         this.listarExperiencias();
@@ -94,21 +85,9 @@ export class ExperienciaComponent implements OnInit {
     }
   }
 
-// Borrar Experiencia  
-  borrarExperiencia(id: number){
-    this._crudService.borrarExperiencia(id).subscribe(data=> {
-      this.toastr.error('Experiencia eliminada correctamente!','Experiencia Eliminada');
-      this.listarExperiencias();
-    }, error => {
-      this.toastr.error('Ocurrió un error', 'Error');
-    })
-    this.form.reset();
-  }  
-
-// Editar Experiencia  
-  editarExperiencia(experiencia: any){
-    this.form.reset();
-    this.accion = 'Editar';
+  
+  // Editar Experiencia  
+  editarExperiencia(experiencia:any, abreModal:any){
     this.id = experiencia.id;
     this.form.patchValue({
       fecha_inicio: experiencia.fecha_inicio,
@@ -118,8 +97,24 @@ export class ExperienciaComponent implements OnInit {
       nombre_empresa: experiencia.nombre_empresa,
       puesto: experiencia.puesto,
       url_empresa: experiencia.url_empresa
-
-    })
+    });
+    this.modal.open(abreModal, { size:'xl', centered:true, scrollable:true });
+    this.accion = 'Editar';
+    this.crudService.editarProyecto(experiencia, experiencia).subscribe(data => {
+      this.listaExperiencias = data;
+      this.id = undefined;
+      this.toastr.info('Proyecto editado con éxito!', 'Proyecto Editado!');
+      this.listarExperiencias();
+    })  
   }
+
+//Borrar Proyecto
+borrarExperiencia(id: number){
+  this.crudService.borrarExperiencia(id).subscribe(null, data=> {
+    this.id = undefined;
+    this.toastr.info('Proyecto eliminado correctamente!','Proyecto Eliminado');
+    this.listarExperiencias();
+  })
+}  
 
 }

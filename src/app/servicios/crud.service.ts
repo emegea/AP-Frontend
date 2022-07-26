@@ -30,7 +30,7 @@ export class CrudService {
     return this.http.post(this.urlApi + 'persona/nueva', persona);
   }
   editarPersona(id: number, persona: any):Observable <any> {
-    return this.http.put(this.urlApi + 'persona/' + id, persona);
+    return this.http.put(this.urlApi + 'persona/editar/' + id, persona, {responseType: 'text'} );
   }
 
   // CRUD EDUCACIÓN
@@ -47,7 +47,7 @@ export class CrudService {
     return this.http.post(this.urlApi + 'educacion/nueva', educacion);
   }
   editarEducacion(id: number, educacion: any):Observable <any> {
-    return this.http.put(this.urlApi + 'educacion/' + id, educacion);
+    return this.http.put(this.urlApi + 'educacion/editar/' + id, educacion, {responseType: 'text'} );
   }
 
   // CRUD EXPERIENCIA
@@ -64,7 +64,7 @@ export class CrudService {
     return this.http.post(this.urlApi + 'experiencia/nueva', experiencia);
   }
   editarExperiencia(id: number, experiencia: any):Observable <any> {
-    return this.http.put(this.urlApi + 'experiencia/' + id, experiencia);
+    return this.http.put(this.urlApi + 'experiencia/editar/' + id, experiencia, {responseType: 'text'} );
   }
 
   // CRUD HABILIDAD
@@ -81,7 +81,7 @@ export class CrudService {
     return this.http.post(this.urlApi + 'habilidad/nueva', habilidad);
   }
   editarHabilidad(id: number, habilidad: any):Observable <any> {
-    return this.http.put(this.urlApi + 'habilidad/' + id, habilidad);
+    return this.http.put(this.urlApi + 'habilidad/editar/' + id, habilidad, {responseType: 'text'} );
   }
 
   // CRUD PROYECTO
@@ -98,6 +98,6 @@ export class CrudService {
     return this.http.post(this.urlApi + 'proyecto/nueva', proyecto);
   }
   editarProyecto(id: number, proyecto: any):Observable <any> {
-    return this.http.put(this.urlApi + 'proyecto/editar/' + id, proyecto);
+    return this.http.put(this.urlApi + 'proyecto/editar/' + id, proyecto, {responseType: 'text'} );
   }
 }

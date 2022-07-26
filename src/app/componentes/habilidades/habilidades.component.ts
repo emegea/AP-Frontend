@@ -12,7 +12,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class HabilidadesComponent implements OnInit {
   
-  listaInsignias:any; // Esta lista es la que conecta al JSON
   listaHabilidades: any [] = [];
   accion = 'Agregar';
   form: FormGroup;
@@ -20,12 +19,11 @@ export class HabilidadesComponent implements OnInit {
   ulogged: String = "";
 
   constructor(
-    private datosPortfolio:CrudService, //Acá llamo al service que carga el Json
-    public modal: NgbModal, // Declaro el Modal
-    private fb: FormBuilder,
     private toastr: ToastrService,
-    private LoginService: LoginService,
-    private _crudService: CrudService) { 
+    private fb: FormBuilder,
+    private loginService: LoginService, // Service Login
+    public modal: NgbModal, // Declaro el Modal
+    private crudService: CrudService) {  // Service CRUD
     this.form = this.fb.group({
       porcentaje: ['', Validators.required],
       titulo_habilidad: ['', Validators.required]
@@ -34,10 +32,7 @@ export class HabilidadesComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarHabilidades();
-    this.datosPortfolio.obtenerDatos().subscribe(data => {
-      this.listaInsignias=data.Insignias;
-    });
-    this.ulogged = this.LoginService.getUserLogged();
+    this.ulogged = this.loginService.getUserLogged();
   }
 
   //MÉTODOS DEL MODAL
@@ -48,7 +43,7 @@ export class HabilidadesComponent implements OnInit {
 // CRUD
 // Listar Habilidades
   listarHabilidades(){
-    this._crudService.getListaHabilidades().subscribe(data=> {
+    this.crudService.getListaHabilidades().subscribe(data=> {
       this.form.reset();
       this.listaHabilidades = data;
    });
@@ -62,15 +57,15 @@ export class HabilidadesComponent implements OnInit {
     }
     if(this.id == undefined){
       // Si es indefinido o sea que no existe, entonces Agregar Habilidad
-      this._crudService.guardarHabilidad(habilidad).subscribe(data =>{
+      this.crudService.guardarHabilidad(habilidad).subscribe(data =>{
         this.toastr.success('Habilidad registrada con éxito!', 'Habilidad Registrada!');
-        this.listarHabilidades();
         this.form.reset();  
+        this.listarHabilidades();
       })  
     }else{
       habilidad.id = this.id;
       // Si lo anterior no sucede, osea que si existe, entonces Editar Habilidad
-      this._crudService.editarHabilidad(this.id, habilidad).subscribe(data => {
+      this.crudService.editarHabilidad(this.id, habilidad).subscribe(data => {
         this.form.reset();
         this.accion = 'Editar';
         this.id = undefined;
@@ -79,26 +74,30 @@ export class HabilidadesComponent implements OnInit {
       })  
     }
   }
-
-// Borrar Habilidad
-  borrarHabilidad(id: number){
-    this._crudService.borrarHabilidad(id).subscribe(data=> {
-      this.toastr.error('Habilidad eliminada correctamente!','Habilidad Eliminada');
-      this.listarHabilidades();
-    }, error => {
-      this.toastr.error('Se produjo un error');
-    })
-    this.form.reset();
-  } 
-
-  // Editar Habilidad
-  editarHabilidad(habilidad: any){
-    this.accion = 'Editar';
+//Editar Habilidad
+  editarHabilidad(habilidad:any, abreModal:any){
     this.id = habilidad.id;
     this.form.patchValue({
       porcentaje: habilidad.porcentaje,
       titulo_habilidad: habilidad.titulo_habilidad
-    })
+      });
+    this.modal.open(abreModal, { size:'xl', centered:true, scrollable:true });
+    this.accion = 'Editar';
+    this.crudService.editarProyecto(habilidad, habilidad).subscribe(data => {
+      this.listaHabilidades = data;
+      this.id = undefined;
+      this.toastr.info('Proyecto editado con éxito!', 'Proyecto Editado!');
+      this.listarHabilidades();
+    })  
+  }
+  
+// Borrar Habilidad
+  borrarHabilidad(id: number){
+    this.crudService.borrarHabilidad(id).subscribe(null, data=> {
+      this.id = undefined;
+      this.toastr.error('Habilidad eliminada correctamente!','Habilidad Eliminada');
+      this.listarHabilidades();
+    }) 
   }
 
 }

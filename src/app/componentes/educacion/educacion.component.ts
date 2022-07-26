@@ -12,7 +12,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class EducacionComponent implements OnInit {
   
-  listaInsignias:any; // Esta lista es la que conecta al JSON
   listaEducaciones: any [] = [];
   accion = 'Agregar';
   form: FormGroup;
@@ -20,33 +19,25 @@ export class EducacionComponent implements OnInit {
   ulogged: String = "";
 
   constructor(
-    private datosPortfolio:CrudService, //Acá llamo al service que carga el Json
     public modal: NgbModal, // Declaro el Modal
-    private fb: FormBuilder,
     private toastr: ToastrService,
-    private LoginService: LoginService,
-    private _crudService: CrudService) { 
+    private loginService: LoginService, // Service Login
+    private fb: FormBuilder,
+    private crudService: CrudService) {  // Service CRUD
       this.form = this.fb.group({
-        acerca_de: ['', Validators.required],
-        apellido: ['', Validators.required],
-        ciudad: ['', Validators.required],
-        email: ['', Validators.required],
-        fecha_nac: ['', Validators.required],
-        nombre: ['', Validators.required],
-        pais: ['', Validators.required],
-        provincia: ['', Validators.required],
-        puesto: ['', Validators.required],
-        telefono: ['', Validators.required],
-        url_img: ['', Validators.required]
+        fecha_inicio: ['', Validators.required],
+        fecha_fin: ['', Validators.required],
+        institucion: ['', Validators.required],
+        img_diploma: ['', Validators.required],
+        localidad: ['', Validators.required],
+        titulo_educacion: ['', Validators.required],
+        url_diploma: ['', Validators.required],
       })
   }
 
   ngOnInit(): void {
     this.listarEducaciones();
-    this.datosPortfolio.obtenerDatos().subscribe(data => {
-      this.listaInsignias=data.Insignias;
-    });
-    this.ulogged = this.LoginService.getUserLogged();
+    this.ulogged = this.loginService.getUserLogged();
   }
 
   //MÉTODOS DEL MODAL
@@ -57,7 +48,7 @@ export class EducacionComponent implements OnInit {
 // CRUD
 // Listar Proyectos
   listarEducaciones(){
-    this._crudService.getListaEducaciones().subscribe(data=> {
+    this.crudService.getListaEducaciones().subscribe(data=> {
       this.form.reset();
       this.listaEducaciones = data;
    });
@@ -68,59 +59,61 @@ export class EducacionComponent implements OnInit {
     const educacion: any = {
       fecha_inicio: this.form.get('fecha_inicio')?.value,
       fecha_fin: this.form.get('fecha_fin')?.value,
-      img_empresa: this.form.get('img_empresa')?.value,
-      localidad_empresa: this.form.get('localidad_empresa')?.value,
-      nombre_empresa: this.form.get('nombre_empresa')?.value,
-      puesto: this.form.get('puesto')?.value,
-      url_empresa: this.form.get('url_empresa')?.value
+      institucion: this.form.get('institucion')?.value,
+      img_diploma: this.form.get('img_diploma')?.value,
+      localidad: this.form.get('localidad')?.value,
+      titulo_educacion: this.form.get('titulo_educacion')?.value,
+      url_diploma: this.form.get('url_diploma')?.value
     }
     if(this.id == undefined){
       // Si es indefinido o sea que no existe, entonces Agregar Educación
-      this._crudService.guardarEducacion(educacion).subscribe(data =>{
+      this.accion =' Agregar';
+      this.crudService.guardarEducacion(educacion).subscribe(data =>{
         this.toastr.success('Educacion registrada con éxito!', 'Educacion Registrada!');
+        this.form.reset();
         this.listarEducaciones();
-        this.form.reset();  
-      }, error =>{
-        this.toastr.error('Ocurrió un error', 'Error');
       })  
     }else{
-      // Si lo anterior no sucede, osea que si existe, entonces Editar Educación
+      // Si lo anterior no sucede, osea que si existe, entonces Editar Proyecto
       educacion.id = this.id;
-      this._crudService.editarEducacion(this.id, educacion).subscribe(data => {
-        this.form.reset();
-        this.accion = 'Editar';
+      this.accion = 'Editar';
+      this.crudService.editarProyecto(this.id, educacion).subscribe(data => {
         this.id = undefined;
-        this.toastr.info('Educacion registrada con éxito!', 'Educacion Registrada!');
+        this.toastr.info('Educacion editada con éxito!', 'Educacion Editada!');
         this.listarEducaciones();
       })  
     }
   }
 
-//Borrar Educación
-  borrarEducacion(id: number){
-    this._crudService.borrarEducacion(id).subscribe(data=> {
-      this.toastr.error('Educacion eliminada correctamente!','Educacion Eliminada');
-      this.listarEducaciones();
-    }, error => {
-      this.toastr.error('Ocurrió un error', 'Error');
-    })
-    this.form.reset();
-  }
-
 //Editar Proyecto
-  editarEducacion(educacion: any){
-    this.form.reset();
-    this.accion = 'Editar';
+  editarEducacion(educacion: any, abreModal: any){
     this.id = educacion.id;
     this.form.patchValue({
       fecha_inicio: educacion.fecha_inicio,
       fecha_fin: educacion.fecha_fin,
-      img_empresa: educacion.img_empresa,
-      localidad_empresa: educacion.localidad_empresa,
-      nombre_empresa: educacion.nombre_empresa,
-      puesto: educacion.puesto,
-      url_empresa: educacion.url_empresa
-    })
+      institucion: educacion.institucion,
+      img_diploma: educacion.img_diploma,
+      localidad: educacion.localidad,
+      titulo_educacion: educacion.titulo_educacion,
+      url_diploma: educacion.url_diploma
+    });
+    this.modal.open(abreModal, { size:'xl', centered:true, scrollable:true });
+    this.accion = 'Editar';
+    this.crudService.editarProyecto(educacion, educacion).subscribe(data => {
+      this.listaEducaciones = data;
+      this.id = undefined;
+      this.toastr.info('Educación editada con éxito!', 'Educación Editada!');
+      this.listarEducaciones();
+    })  
   }
+
+  //Borrar Educación
+  borrarEducacion(id: number){
+    this.crudService.borrarEducacion(id).subscribe(null, data=> {
+      this.id = undefined;
+      this.toastr.info('Educación eliminada correctamente!','Educación Eliminada');
+      this.listarEducaciones();
+    })
+  } 
 
 }

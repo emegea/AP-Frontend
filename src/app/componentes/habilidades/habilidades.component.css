@@ -1,4 +1,4 @@
-.habilidades ul { display:block; }
+.habilidades ul { display:block; flex-wrap: wrap;}
 .habilidades ul li {
     margin:0 0 2% 0;
     width:25%;
@@ -40,8 +40,14 @@
 .habilidad .iconito:hover { color: rgb(0,0,0,0.8); }
 
 
+.responsive { display:none; }
+.noResponsive { display:flex; }
+
 @media (max-width:480px){
+    .habilidades ul li { width:50%; }
     .habilidad article { display:block; padding: 0 0 5% 0; margin:0 0 5% 0; }
-    .habilidad:first-child { padding-top:5%; }
     .habilidad article div { flex-direction:column; }
+    .tarjeta article div img { display:flex !important; }
+    .noResponsive { display:none; }
+    .responsive { display:flex; }
 }

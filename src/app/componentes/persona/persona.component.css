@@ -122,10 +122,25 @@ textarea.acercaDe {
     .quiensoy { flex-direction:column; }
     .avatar { align-items:center; }
     .avatar a { margin-left:auto; }
-    .resumen { padding:10% 0; }
+    .resumen { padding:10%; }
     .resumen ul { flex-direction:column; }
     .resumen ul a i { margin:0 10px 0 0; font-size:10px; }
-    .insignias li a img { height:50px; }
+    .insignias { 
+        display:flex;
+        flex-direction:row;
+        width:100%;
+        align-items:flex-start;
+        justify-content:space-evenly;
+        padding:5% 0;
+    } 
+    .insignias a { flex-direction:column; text-align:center;}
+    .insignias li a img { height:50px; padding: 0; margin:0; }
     .titulo span { font-size:1rem; }
     .quiensoyContenido ul { display:none; }
+    .resumen h2.titulo { line-height:1.5rem; text-align:center; }
+    .resumen h3 { font-size: 0.8rem !important; text-align:center; }
+    .resumen h4 { font-size: 0.8rem !important; }
+    
+
+
 }

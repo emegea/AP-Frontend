@@ -2,7 +2,7 @@
     <h2 class="titulo col-xs-10 col-sm-10 col-md-10 col-lg-11">Experiencia</h2>
     <div class="iconitos col-xs-2 col-sm-2 col-md-2 col-lg-1">
         <i class="fa fa-plus iconito" *ngIf="ulogged != ''" 
-        (click)="abrirEditarExperiencia(experiencia)" ></i>
+        (click)="abrirEditarExperiencia(divModal)" ></i>
     </div>
 </div>
 <section class="tarjeta col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -23,20 +23,16 @@
         </div>
     </div>
     <div class="iconitos col-xs-12 col-sm-1 col-md-1 col-lg-1">
-        <a>
-            <i class="fa fa-pen iconito" *ngIf="ulogged !=''"
-            (click)="abrirEditarExperiencia(experiencia)"></i>
-        </a>
-        <a>
-            <i class="fa fa-trash iconito" *ngIf="ulogged !=''"
-            (click)="borrarExperiencia(experiencia.id)"></i>
-        </a>
+        <i class="fa fa-pen iconito" *ngIf="ulogged !=''" 
+        (click)="editarExperiencia(experiencia, divModal)"></i>
+        <i class="fa fa-trash iconito" *ngIf="ulogged !=''"
+        (click)="borrarExperiencia(experiencia.id)"></i>
     </div>
 </article>
 </ul>
 
 <!-- MODAL DE EXPERIENCIAS -->
-<ng-template #experiencia let-modal>
+<ng-template #divModal let-modal>
     <div class="modal-header">
         <h4 class="modal-title">{{ accion | uppercase }} EXPERIENCIA</h4>
         <button class="btn close" aria-label="close" type="button" (click)="modal.dismiss()">
@@ -79,17 +75,27 @@
                         </span>
                         <input formControlName="localidad_empresa" maxlength="50" type="text" class="form-control" placeholder="Localidad">
                     </div>
+                    <!-- URL EMPRESA -->
+                    <div class="input-group input-group-lg mb-3 inputIcon">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-link"
+                                [class.green-icon]="this.form.get('url_empresa')?.valid"
+                                [class.red-icon]="this.form.get('url_empresa')?.invalid && this.form.get('url_empresa')?.touched">    
+                            </i>
+                        </span>
+                        <input formControlName="url_empresa" maxlength="2000" type="url" class="form-control" placeholder="URL de empresa">
+                    </div>
+
                     <!-- IMAGEN -->
                     <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
                             <i class="fa-solid fa-image"
                                 [class.green-icon]="this.form.get('img_empresa')?.valid"
                                 [class.red-icon]="this.form.get('img_empresa')?.invalid && this.form.get('img_empresa')?.touched">    
-                            </i>
-                        </span>
+                            </i>    
+                        </span>    
                         <input formControlName="img_empresa" maxlength="2000" type="url" class="form-control" placeholder="URL de imagen">
-                    </div>
-
+                    </div>    
                     <!-- FECHA DE INICIO -->
                     <div class="input-group input-group-lg mb-3 inputIcon">
                         <span class="input-group-text">
@@ -98,7 +104,12 @@
                                 [class.red-icon]="this.form.get('fecha_inicio')?.invalid && this.form.get('fecha_inicio')?.touched">    
                             </i>
                         </span>
-                        <input formControlName="fecha_inicio" maxlength="10" type="date" class="form-control" placeholder="Fecha de inicio">
+                        <input formControlName="fecha_inicio"
+                            maxlength="10"
+                            type="text"
+                            onfocus="(this.type='date').touched"
+                            class="form-control"
+                        placeholder="Fecha de inicio">
                     </div>
 
                     <!-- FECHA DE FINALIZACIÓN -->
@@ -109,7 +120,12 @@
                                 [class.red-icon]="this.form.get('fecha_fin')?.invalid && this.form.get('fecha_fin')?.touched">    
                             </i>
                         </span>
-                        <input formControlName="fecha_fin" maxlength="10" type="date" class="form-control" placeholder="Fecha de finalización">
+                        <input formControlName="fecha_fin"
+                            maxlength="10"
+                            type="text"
+                            onfocus="(this.type='date').touched"
+                            class="form-control"
+                        placeholder="Fecha de finalización">
                     </div>
 
                     <!-- BOTON ENVIAR -->
