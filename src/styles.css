@@ -15,7 +15,7 @@ input, input:hover, input:focus, input:checked, input:indeterminate,
 .btn, .btn:hover, .btn:focus { transition:ease-in-out .2s; }
 
 body {
-  background: url(assets/img/fondo.png) fixed;
+  background: url(assets/img/fondo.jpg) fixed;
   background-size: cover;
 }
 
