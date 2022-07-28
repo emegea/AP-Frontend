@@ -74,7 +74,7 @@ export class ExperienciaComponent implements OnInit {
         this.listarExperiencias();
       })  
     }else{
-      // Si lo anterior no sucede, osea que si existe, entonces Editar Proyecto
+      // Si lo anterior no sucede, osea que si existe, entonces Editar Experiencia
       experiencia.id = this.id;
       this.accion = 'Editar';
       this.crudService.editarExperiencia(this.id, experiencia).subscribe(data => {
@@ -100,19 +100,19 @@ export class ExperienciaComponent implements OnInit {
     });
     this.modal.open(abreModal, { size:'xl', centered:true, scrollable:true });
     this.accion = 'Editar';
-    this.crudService.editarProyecto(experiencia, experiencia).subscribe(data => {
+    this.crudService.editarExperiencia(experiencia, experiencia).subscribe(data => {
       this.listaExperiencias = data;
       this.id = undefined;
-      this.toastr.info('Proyecto editado con éxito!', 'Proyecto Editado!');
+      this.toastr.info('Experiencia editada con éxito!', 'Experiencia editada!');
       this.listarExperiencias();
     })  
   }
 
-//Borrar Proyecto
+//Borrar Experiencia
 borrarExperiencia(id: number){
   this.crudService.borrarExperiencia(id).subscribe(null, data=> {
     this.id = undefined;
-    this.toastr.info('Proyecto eliminado correctamente!','Proyecto Eliminado');
+    this.toastr.info('Experiencia eliminado correctamente!','Experiencia Eliminado');
     this.listarExperiencias();
   })
 }  

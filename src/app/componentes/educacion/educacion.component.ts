@@ -46,7 +46,7 @@ export class EducacionComponent implements OnInit {
   }
 
 // CRUD
-// Listar Proyectos
+// Listar Educaciones
   listarEducaciones(){
     this.crudService.getListaEducaciones().subscribe(data=> {
       this.form.reset();
@@ -74,10 +74,10 @@ export class EducacionComponent implements OnInit {
         this.listarEducaciones();
       })  
     }else{
-      // Si lo anterior no sucede, osea que si existe, entonces Editar Proyecto
+      // Si lo anterior no sucede, osea que si existe, entonces Editar Educación
       educacion.id = this.id;
-      this.accion = 'Editar';
-      this.crudService.editarProyecto(this.id, educacion).subscribe(data => {
+      this.crudService.editarEducacion(this.id, educacion).subscribe(data => {
+        this.accion = 'Editar';
         this.id = undefined;
         this.toastr.info('Educacion editada con éxito!', 'Educacion Editada!');
         this.listarEducaciones();
@@ -85,7 +85,7 @@ export class EducacionComponent implements OnInit {
     }
   }
 
-//Editar Proyecto
+//Editar Educación
   editarEducacion(educacion: any, abreModal: any){
     this.id = educacion.id;
     this.form.patchValue({
@@ -99,7 +99,7 @@ export class EducacionComponent implements OnInit {
     });
     this.modal.open(abreModal, { size:'xl', centered:true, scrollable:true });
     this.accion = 'Editar';
-    this.crudService.editarProyecto(educacion, educacion).subscribe(data => {
+    this.crudService.editarEducacion(educacion, educacion).subscribe(data => {
       this.listaEducaciones = data;
       this.id = undefined;
       this.toastr.info('Educación editada con éxito!', 'Educación Editada!');

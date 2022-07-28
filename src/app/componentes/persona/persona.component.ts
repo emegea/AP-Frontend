@@ -98,7 +98,6 @@ export class PersonaComponent implements OnInit {
     }
   }
 
-  
 //Editar Persona
   editarPersona(persona:any, abreModal:any){
     this.id = persona.id;
@@ -117,7 +116,7 @@ export class PersonaComponent implements OnInit {
     });
     this.modal.open(abreModal, { size:'xl', centered:true, scrollable:true });
     this.accion = 'Editar';
-    this.crudService.editarProyecto(persona, persona).subscribe(data => {
+    this.crudService.editarPersona(persona, persona).subscribe(data => {
       this.listaPersonas = data;
       this.id = undefined;
       this.toastr.info('Persona editada con éxito!', 'Persona Editada!');
@@ -125,7 +124,7 @@ export class PersonaComponent implements OnInit {
     })  
   }
 
-//Borrar Proyecto
+//Borrar Persona
   borrarPersona(id: number){
     this.crudService.borrarPersona(id).subscribe(null, data=> {
       this.id = undefined;

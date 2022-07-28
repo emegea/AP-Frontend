@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
 
-  private URL ='http://localhost:8080';
+  private URL ='https://ap-backend-emegea.herokuapp.com';
   constructor(private http:HttpClient) { }
 
   signin(user:any){

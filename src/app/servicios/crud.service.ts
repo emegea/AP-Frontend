@@ -14,7 +14,7 @@ export class CrudService {
     return this.http.get('/assets/data/data.json');
   }
 
-  private urlApi = "http://localhost:8080/api/"
+  private urlApi = "https://ap-backend-emegea.herokuapp.com/api/"
 
   // CRUD PERSONA
   getListaPersonas(): Observable<any> {

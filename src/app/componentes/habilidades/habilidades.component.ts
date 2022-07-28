@@ -83,10 +83,10 @@ export class HabilidadesComponent implements OnInit {
       });
     this.modal.open(abreModal, { size:'xl', centered:true, scrollable:true });
     this.accion = 'Editar';
-    this.crudService.editarProyecto(habilidad, habilidad).subscribe(data => {
+    this.crudService.editarHabilidad(habilidad, habilidad).subscribe(data => {
       this.listaHabilidades = data;
       this.id = undefined;
-      this.toastr.info('Proyecto editado con éxito!', 'Proyecto Editado!');
+      this.toastr.info('Habilidad editada con éxito!', 'Habilidad Editada!');
       this.listarHabilidades();
     })  
   }
