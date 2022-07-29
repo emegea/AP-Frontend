@@ -57,14 +57,15 @@ export class HabilidadesComponent implements OnInit {
     }
     if(this.id == undefined){
       // Si es indefinido o sea que no existe, entonces Agregar Habilidad
+      this.accion ='Agregar';
       this.crudService.guardarHabilidad(habilidad).subscribe(data =>{
         this.toastr.success('Habilidad registrada con éxito!', 'Habilidad Registrada!');
         this.form.reset();  
         this.listarHabilidades();
       })  
     }else{
-      habilidad.id = this.id;
       // Si lo anterior no sucede, osea que si existe, entonces Editar Habilidad
+      habilidad.id = this.id;
       this.crudService.editarHabilidad(this.id, habilidad).subscribe(data => {
         this.form.reset();
         this.accion = 'Editar';

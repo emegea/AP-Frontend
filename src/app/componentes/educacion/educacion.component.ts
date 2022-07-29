@@ -19,10 +19,10 @@ export class EducacionComponent implements OnInit {
   ulogged: String = "";
 
   constructor(
-    public modal: NgbModal, // Declaro el Modal
     private toastr: ToastrService,
-    private loginService: LoginService, // Service Login
     private fb: FormBuilder,
+    private loginService: LoginService, // Service Login
+    public modal: NgbModal, // Declaro el Modal
     private crudService: CrudService) {  // Service CRUD
       this.form = this.fb.group({
         fecha_inicio: ['', Validators.required],
@@ -67,7 +67,7 @@ export class EducacionComponent implements OnInit {
     }
     if(this.id == undefined){
       // Si es indefinido o sea que no existe, entonces Agregar Educación
-      this.accion =' Agregar';
+      this.accion ='Agregar';
       this.crudService.guardarEducacion(educacion).subscribe(data =>{
         this.toastr.success('Educacion registrada con éxito!', 'Educacion Registrada!');
         this.form.reset();
