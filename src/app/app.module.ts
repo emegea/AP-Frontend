@@ -15,6 +15,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 //COMPONENTES
 import { HeaderComponent } from './componentes/header/header.component';
+import { EditarPersonaComponent } from './componentes/editar-persona/editar-persona.component';
 import { EducacionComponent } from './componentes/educacion/educacion.component';
 import { ExperienciaComponent } from './componentes/experiencia/experiencia.component';
 import { FooterComponent } from './componentes/footer/footer.component';
@@ -29,6 +30,7 @@ import { HomeComponent } from './componentes/home/home.component';
   declarations: [
     AppComponent,
     HeaderComponent,
+    EditarPersonaComponent,
     EducacionComponent,
     ExperienciaComponent,
     FooterComponent,
